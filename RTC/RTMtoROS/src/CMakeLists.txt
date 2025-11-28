@@ -1,6 +1,7 @@
 set(comp_srcs RTMtoROS.cpp ManipulatorCommonInterface_CommonSVC_impl.cpp ManipulatorCommonInterface_MiddleSVC_impl.cpp )
 set(standalone_srcs RTMtoROSComp.cpp)
 
+# C++11フラグの追加（念のため）
 set(CMAKE_CXX_FLAGS "-std=c++11")
 
 if(${OPENRTM_VERSION_MAJOR} LESS 2)
@@ -35,6 +36,10 @@ include_directories(${PROJECT_SOURCE_DIR}/include/${PROJECT_NAME})
 include_directories(${PROJECT_BINARY_DIR})
 include_directories(${PROJECT_BINARY_DIR}/idl)
 include_directories(${OPENRTM_INCLUDE_DIRS})
+
+# ROSのインクルードパスを追加 (重要)
+include_directories(${catkin_INCLUDE_DIRS})
+
 add_definitions(${OPENRTM_CFLAGS})
 
 MAP_ADD_STR(comp_hdrs "../" comp_headers)
@@ -51,13 +56,17 @@ if(NOT TARGET ALL_IDL_TGT)
  add_custom_target(ALL_IDL_TGT)
 endif(NOT TARGET ALL_IDL_TGT)
 add_dependencies(${PROJECT_NAME} ALL_IDL_TGT)
-target_link_libraries(${PROJECT_NAME} ${OPENRTM_LIBRARIES})
+
+# ★修正: ここに ${catkin_LIBRARIES} を追加
+target_link_libraries(${PROJECT_NAME} ${OPENRTM_LIBRARIES} ${catkin_LIBRARIES})
 
 # 実行ファイルの作成
 # スタンドアローン用ソースのみをコンパイルし、ライブラリをリンクする
 add_executable(${PROJECT_NAME}Comp ${standalone_srcs})
 add_dependencies(${PROJECT_NAME}Comp ALL_IDL_TGT)
-target_link_libraries(${PROJECT_NAME}Comp ${PROJECT_NAME} ${OPENRTM_LIBRARIES})
+
+# ★修正: ここにも ${catkin_LIBRARIES} を追加
+target_link_libraries(${PROJECT_NAME}Comp ${PROJECT_NAME} ${OPENRTM_LIBRARIES} ${catkin_LIBRARIES})
 
 install(TARGETS ${PROJECT_NAME} ${PROJECT_NAME}Comp
     EXPORT ${PROJECT_NAME}

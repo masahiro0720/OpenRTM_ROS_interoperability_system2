@@ -1,0 +1,50 @@
+Nov 28 11:18:33.933 INFO: manager: 2.0.0
+Nov 28 11:18:33.933 INFO: manager: Copyright (C) 2003-2022, Noriaki Ando and OpenRTM development team,
+Nov 28 11:18:33.933 INFO: manager:   Intelligent Systems Research Institute, AIST,
+Nov 28 11:18:33.933 INFO: manager: Copyright (C) 2022, Noriaki Ando and OpenRTM development team,
+Nov 28 11:18:33.933 INFO: manager:   Industrial Cyber-Physical Research Center, AIST,
+Nov 28 11:18:33.933 INFO: manager:   All right reserved.
+Nov 28 11:18:33.933 INFO: manager: Manager starting.
+Nov 28 11:18:33.933 INFO: manager: Starting local logging.
+Nov 28 11:18:33.935 WARNING: NamingOnCorba: No endpoint for the CORBA naming service (localhost) was found.
+Nov 28 11:18:33.935 INFO: NamingManager: NameServer connection succeeded: corba/localhost
+Nov 28 11:18:33.935 INFO: ManagerServant: Named manager reference (INS) was successfully created.
+Nov 28 11:18:33.935 WARNING: ManagerServant: Master manager not found
+Nov 28 11:18:33.936 INFO: LocalServiceAdmin: All the local services are enabled.
+Nov 28 11:18:33.937 INFO: ec_base: setRate(1000000.000000) done
+Nov 28 11:18:33.937 INFO: ec_base: setRate(400.000000) done
+Nov 28 11:18:33.937 INFO: RTMtoROS0: 1 execution context was created.
+Nov 28 11:18:33.940 INFO: RTMtoROS0: Initial active configuration set is default.
+Nov 28 11:18:43.948 INFO: ManagerServant: Master manager not found
+Nov 28 11:18:53.956 INFO: ManagerServant: Master manager not found
+Nov 28 11:19:03.962 INFO: ManagerServant: Master manager not found
+Nov 28 11:19:13.970 INFO: ManagerServant: Master manager not found
+Nov 28 11:19:23.979 INFO: ManagerServant: Master manager not found
+Nov 28 11:19:33.988 INFO: ManagerServant: Master manager not found
+Nov 28 11:19:43.997 INFO: ManagerServant: Master manager not found
+Nov 28 11:19:54.005 INFO: ManagerServant: Master manager not found
+Nov 28 11:20:04.013 INFO: ManagerServant: Master manager not found
+Nov 28 11:20:14.019 INFO: ManagerServant: Master manager not found
+Nov 28 11:20:24.028 INFO: ManagerServant: Master manager not found
+Nov 28 11:20:34.036 INFO: ManagerServant: Master manager not found
+Nov 28 11:20:44.046 INFO: ManagerServant: Master manager not found
+Nov 28 11:20:53.560 WARNING: SdoServiceAdmin: No available SDO service in the factory: 
+Nov 28 11:20:54.054 INFO: ManagerServant: Master manager not found
+Nov 28 11:21:04.063 INFO: ManagerServant: Master manager not found
+Nov 28 11:21:14.070 INFO: ManagerServant: Master manager not found
+Nov 28 11:21:24.076 INFO: ManagerServant: Master manager not found
+Nov 28 11:21:34.084 INFO: ManagerServant: Master manager not found
+Nov 28 11:21:44.093 INFO: ManagerServant: Master manager not found
+Nov 28 11:21:54.103 INFO: ManagerServant: Master manager not found
+Nov 28 11:22:04.111 INFO: ManagerServant: Master manager not found
+Nov 28 11:22:14.119 INFO: ManagerServant: Master manager not found
+Nov 28 11:22:24.128 INFO: ManagerServant: Master manager not found
+Nov 28 11:22:34.136 INFO: ManagerServant: Master manager not found
+Nov 28 11:22:44.143 INFO: ManagerServant: Master manager not found
+Nov 28 11:22:54.152 INFO: ManagerServant: Master manager not found
+Nov 28 11:23:04.159 INFO: ManagerServant: Master manager not found
+Nov 28 11:23:14.167 INFO: ManagerServant: Master manager not found
+Nov 28 11:23:24.174 INFO: ManagerServant: Master manager not found
+Nov 28 11:23:34.180 INFO: ManagerServant: Master manager not found
+Nov 28 11:23:44.187 INFO: ManagerServant: Master manager not found
+Nov 28 11:23:54.196 INFO: ManagerServant: Master manager not found

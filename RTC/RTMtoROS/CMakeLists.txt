@@ -1,6 +1,22 @@
 cmake_minimum_required(VERSION 2.8)
 
 project(RTMtoROS)
+
+# --- [追加] C++標準設定 (C++11以上が必要) ---
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# --- [追加] ROS (catkin) パッケージの検索 ---
+find_package(catkin REQUIRED COMPONENTS
+  roscpp
+  std_msgs
+  sensor_msgs
+  open_manipulator_msgs
+)
+
+# --- [追加] ROSのヘッダーパスを含める ---
+include_directories(${catkin_INCLUDE_DIRS})
+
 string(TOLOWER ${PROJECT_NAME} PROJECT_NAME_LOWER)
 include("${PROJECT_SOURCE_DIR}/cmake/utils.cmake")
 set(PROJECT_VERSION 1.0.0 CACHE STRING "RTMtoROS version")
@@ -11,9 +27,6 @@ set(PROJECT_DESCRIPTION "ModuleDescription")
 set(PROJECT_VENDOR "rsdlab")
 set(PROJECT_MAINTAINER "unknown")
 set(PROJECT_TYPE "c++/Converter")
-
-set(CMAKE_CXX_STANDARD, 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(OpenRTM)
 set(RTM_VER ${OPENRTM_VERSION})
@@ -168,5 +181,3 @@ configure_file("${PROJECT_SOURCE_DIR}/cmake/cpack_options.cmake.in"
 set(CPACK_PROJECT_CONFIG_FILE ${cpack_options})
 include(${CPACK_PROJECT_CONFIG_FILE})
 include(CPack)
-
-

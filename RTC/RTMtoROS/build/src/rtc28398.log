@@ -1,0 +1,30 @@
+Nov 28 11:48:26.965 INFO: manager: 2.0.0
+Nov 28 11:48:26.965 INFO: manager: Copyright (C) 2003-2022, Noriaki Ando and OpenRTM development team,
+Nov 28 11:48:26.965 INFO: manager:   Intelligent Systems Research Institute, AIST,
+Nov 28 11:48:26.965 INFO: manager: Copyright (C) 2022, Noriaki Ando and OpenRTM development team,
+Nov 28 11:48:26.965 INFO: manager:   Industrial Cyber-Physical Research Center, AIST,
+Nov 28 11:48:26.965 INFO: manager:   All right reserved.
+Nov 28 11:48:26.965 INFO: manager: Manager starting.
+Nov 28 11:48:26.965 INFO: manager: Starting local logging.
+Nov 28 11:48:26.966 WARNING: NamingOnCorba: No endpoint for the CORBA naming service (localhost) was found.
+Nov 28 11:48:26.966 INFO: NamingManager: NameServer connection succeeded: corba/localhost
+Nov 28 11:48:26.966 INFO: ManagerServant: Named manager reference (INS) was successfully created.
+Nov 28 11:48:26.967 WARNING: ManagerServant: Master manager not found
+Nov 28 11:48:26.967 INFO: LocalServiceAdmin: All the local services are enabled.
+Nov 28 11:48:26.967 INFO: ec_base: setRate(1000000.000000) done
+Nov 28 11:48:26.967 INFO: ec_base: setRate(1000.000000) done
+Nov 28 11:48:26.967 INFO: RTMtoROS0: 1 execution context was created.
+Nov 28 11:48:26.971 INFO: RTMtoROS0: Initial active configuration set is default.
+Nov 28 11:48:36.981 INFO: ManagerServant: Master manager not found
+Nov 28 11:48:46.987 INFO: ManagerServant: Master manager not found
+Nov 28 11:48:56.998 INFO: ManagerServant: Master manager not found
+Nov 28 11:49:07.009 INFO: ManagerServant: Master manager not found
+Nov 28 11:49:17.018 INFO: ManagerServant: Master manager not found
+Nov 28 11:49:27.028 INFO: ManagerServant: Master manager not found
+Nov 28 11:49:37.036 INFO: ManagerServant: Master manager not found
+Nov 28 11:49:37.937 WARNING: SdoServiceAdmin: No available SDO service in the factory: 
+Nov 28 11:49:47.044 INFO: ManagerServant: Master manager not found
+Nov 28 11:49:57.052 INFO: ManagerServant: Master manager not found
+Nov 28 11:50:07.059 INFO: ManagerServant: Master manager not found
+Nov 28 11:50:17.065 INFO: ManagerServant: Master manager not found
+Nov 28 11:50:27.072 INFO: ManagerServant: Master manager not found
