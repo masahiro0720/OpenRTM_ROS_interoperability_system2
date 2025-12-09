@@ -49,21 +49,9 @@ RTC::ReturnCode_t RTMtoROS::onInitialize()
   addPort(m_ManipulatorCommonInterface_CommonPort);
   addPort(m_ManipulatorCommonInterface_MiddlePort);
 
-  // --- ROS初期化 ---
-  int argc = 0;
-  char** argv = nullptr;
-  if (!ros::isInitialized()) {
-      ros::init(argc, argv, "rtm_to_ros_bridge", ros::init_options::NoSigintHandler);
-  }
-  
-  nh = new ros::NodeHandle();
-  
-  // サービス待機
-  ROS_INFO("Waiting for /mikata_arm/goal_joint_space_path service...");
-  joint_client = nh->serviceClient<open_manipulator_msgs::SetJointPosition>("/mikata_arm/goal_joint_space_path");
-
-  // 現在位置取得のためのSubscriber (追加)
-  joint_state_sub = nh->subscribe("/joint_states", 10, &RTMtoROS::jointStateCallback, this);
+  // 【修正点】ここでROSの初期化は行わない。
+  // ポインタを確実にnullにしておく
+  nh = nullptr;
 
   return RTC::RTC_OK;
 }
@@ -78,16 +66,60 @@ void RTMtoROS::jointStateCallback(const sensor_msgs::JointState::ConstPtr& msg)
 
 RTC::ReturnCode_t RTMtoROS::onActivated(RTC::UniqueId ec_id)
 {
+  // 【修正点】ActivateされたタイミングでROSにつなぎに行く
+
+  // 1. ROSの初期化（まだされていない場合）
+  int argc = 0;
+  char** argv = nullptr;
+  if (!ros::isInitialized()) {
+      ros::init(argc, argv, "rtm_to_ros_bridge", ros::init_options::NoSigintHandler);
+  }
+
+  // 2. roscore (Master) が生きているかチェック
+  if (!ros::master::check()) {
+      std::cout << "\033[31m[ERROR] roscore not found! Please start roscore before activating.\033[0m" << std::endl;
+      // RTC_ERRORを返すと、System Editor上でActivateが失敗してInactiveに戻ります
+      return RTC::RTC_ERROR; 
+  }
+
+  // 3. NodeHandleと通信のセットアップ
+  if (!nh) {
+      nh = new ros::NodeHandle();
+      
+      ROS_INFO("Connecting to /mikata_arm/goal_joint_space_path service...");
+      // サービスの存在確認待ち（タイムアウト付きにしても良い）
+      // ここでは即時作成するが、呼出時にエラーチェックする
+      joint_client = nh->serviceClient<open_manipulator_msgs::SetJointPosition>("/mikata_arm/goal_joint_space_path");
+      
+      joint_state_sub = nh->subscribe("/joint_states", 10, &RTMtoROS::jointStateCallback, this);
+      
+      ROS_INFO("ROS Communication Initialized.");
+  }
+
+  // 変数リセット
+  stop_mode = false;
+  last_positions.clear();
+
   return RTC::RTC_OK;
 }
 
 RTC::ReturnCode_t RTMtoROS::onDeactivated(RTC::UniqueId ec_id)
 {
+  // 【修正点】Deactivate時にROS接続を切る（メモリ開放）
+  if (nh) {
+      ROS_INFO("Disconnecting ROS...");
+      nh->shutdown(); // ノードハンドルをシャットダウン
+      delete nh;
+      nh = nullptr;
+  }
   return RTC::RTC_OK;
 }
 
 RTC::ReturnCode_t RTMtoROS::onExecute(RTC::UniqueId ec_id)
 {
+  // 【修正点】nhが無い（Activate失敗時など）は実行しない
+  if (!nh || !ros::ok()) return RTC::RTC_OK;
+
   // ROSのコールバックを処理するために必要
   ros::spinOnce();
 
@@ -135,15 +167,26 @@ RTC::ReturnCode_t RTMtoROS::onExecute(RTC::UniqueId ec_id)
   srv.request.joint_position.position = current_cmd; 
   srv.request.path_time = 2.0;
 
-  if (joint_client.call(srv)) {
-      ROS_INFO("Sent Goal: %f, %f ...", current_cmd[0], current_cmd[1]);
-  } 
+  // 接続チェックしてから呼ぶ
+  if (joint_client.exists()) {
+      if (joint_client.call(srv)) {
+          ROS_INFO("Sent Goal: %f, %f ...", current_cmd[0], current_cmd[1]);
+      } else {
+          ROS_WARN("Failed to call service (call returned false).");
+      }
+  } else {
+      // サービスが見つからない場合（Deactivate扱いにはせず、警告だけ出す）
+      // ROS_WARN_THROTTLE(5, "Service /mikata_arm/goal_joint_space_path not available yet.");
+  }
 
   return RTC::RTC_OK;
 }
 
 // 急停止処理
 void RTMtoROS::stopRobot() {
+    // 【修正点】nhチェック
+    if (!nh) return;
+
     // 現在位置を取得できていなければ何もしない
     if (current_joint_map.empty()) {
         ROS_WARN("Cannot stop: No joint states received yet.");
@@ -169,7 +212,7 @@ void RTMtoROS::stopRobot() {
     srv.request.joint_position.position = stop_positions;
     srv.request.path_time = 0.1; // 即座に止めるための短い時間
 
-    if (joint_client.call(srv)) {
+    if (joint_client.exists() && joint_client.call(srv)) {
         ROS_INFO("STOP command sent (Holding current position).");
     } else {
         ROS_ERROR("Failed to send STOP command.");
